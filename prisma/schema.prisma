@@ -40,3 +40,5 @@ model clinic {
   email      String   @unique
   created_at DateTime @default(now())
 }
+
+

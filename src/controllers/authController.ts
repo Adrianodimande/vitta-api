@@ -6,14 +6,14 @@ import { CREATE_CONFLICT409, CREATE_SUCCESS201, READ_SUCCESS200, SERVER_ERROR500
 import bcrypt from "bcrypt";
 import { INVALIDCREDENTIALS401 } from "../settings/constants/constSignInAndSignUp";
 import { Auth } from "../middleware/auth";
-
+import { Request, Response } from "express";
 export class AuthController extends RepositorySignInAndSignUp {
 
 
 
 
 
-    async signUp(req: any, res: any) {
+    async signUp(req: Request, res: Response) {
 
 
         try {
@@ -25,7 +25,7 @@ export class AuthController extends RepositorySignInAndSignUp {
             }
 
 
-            await this.registerUser(req.body);
+            await this.createUser(req.body);
             res.status(STATUS201).json(new HttpResponse(STATUS201, false, CREATE_SUCCESS201, []));
 
         } catch (error) {
@@ -35,7 +35,7 @@ export class AuthController extends RepositorySignInAndSignUp {
 
     }
 
-    async signIn(req: any, res: any) {
+    async signIn(req: Request, res: Response) {
 
         const { email, password } = req.body;
         try {

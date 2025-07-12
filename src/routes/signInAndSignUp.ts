@@ -2,7 +2,7 @@ import express, { response } from 'express';
 import { AuthController } from '../controllers/authController';
 import { HttpResponse } from '../server/httpResponse';
 import { stdin } from 'process';
-import { Sanitize } from '../services/sanitize';
+import { Sanitize } from '../services/sanitize/sanitize';
 import sanitizeSignInAndSignUp from '../services/sanitize/sanitizeSignInAndSignUp';
 import { ValidationUser } from '../services/validations/validationUser';
 

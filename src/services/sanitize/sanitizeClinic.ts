@@ -3,14 +3,14 @@ import { hash } from "bcrypt";
 import { Sanitize } from "./sanitize";
 import { randomInt } from "crypto";
 
-const sanitizeSignInAndSignUp = async (req: any, res: any, next: any) => {
+const sanitizeClinic = async (req: any, res: any, next: any) => {
 
     const body = await req.body;
     const random = randomInt(10, 16);
-    const { name, password } = await req.body;
+    const { name, address, phone, email } = await req.body;
     body['name'] = Sanitize.sanitizeString(name);
-    body['password'] = await hash(password, random);
+    body['address'] = Sanitize.sanitizeString(address);
     next()
 };
 
-export default sanitizeSignInAndSignUp;
+export default sanitizeClinic;

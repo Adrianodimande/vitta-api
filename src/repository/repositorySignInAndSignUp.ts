@@ -25,7 +25,7 @@ export class RepositorySignInAndSignUp {
     }
 
 
-    protected async registerUser(userData: any) {
+    protected async createUser(userData: any) {
 
 
         await this.prisma.user.create({
