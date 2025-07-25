@@ -1,4 +1,4 @@
-import { clinic, PrismaClient } from "../generated/prisma";
+import { Clinic, PrismaClient } from "../generated/prisma";
 
 export class ClinicRepository {
     protected prisma: PrismaClient;
@@ -43,7 +43,7 @@ export class ClinicRepository {
         )
     }
 
-    protected async updateClinic(id: number, clientData: clinic) {
+    protected async updateClinic(id: number, clientData: Clinic) {
 
         await this.prisma.clinic.update({
             where: {

@@ -1,15 +1,15 @@
 import { STATUS200, STATUS201, STATUS400, STATUS401, STATUS404, STATUS409, STATUS500 } from "../settings/constants/constStatusCode";
 import { CREATE_CONFLICT409, CREATE_SUCCESS201, DELETE_NOT_FOUND404, DELETE_SUCCESS200, READ_SUCCESS200, SERVER_ERROR500, UPDATE_NOT_FOUND404, UPDATE_SUCCESS200 } from "../settings/constants/constCrud";
 import { HttpResponse } from "../server/httpResponse";
-import { ClinicRepository } from "../repository/clinicRepository";
 import { Request, Response } from "express";
-export class ClinicController extends ClinicRepository {
+import { DrugRepository } from "../repository/drugRepository";
+export class DrugController extends DrugRepository {
 
- async clinicRead(req: Request, res: Response) {
+    async DrugRead(req: Request, res: Response) {
         try {
 
-         
-          const data =  await this.readClinic();
+
+            const data = await this.readDrug();
             res.status(STATUS200).json(new HttpResponse(STATUS200, false, READ_SUCCESS200, data));
 
 
@@ -18,16 +18,15 @@ export class ClinicController extends ClinicRepository {
         }
 
     }
-    async clinicRegister(req: Request, res: Response) {
+    async drugRegister(req: Request, res: Response) {
         try {
 
-            const findClinic = await this.findClinic(req.body.email);
+            const findDrug = await this.findDrug(req.body.name);
 
-            if (findClinic) {
+            if (findDrug) {
                 return res.status(STATUS409).json(new HttpResponse(STATUS409, true, CREATE_CONFLICT409, []));
             }
-
-            await this.createClinic(req.body);
+            await this.createDrug(req.body);
             res.status(STATUS201).json(new HttpResponse(STATUS201, false, CREATE_SUCCESS201, []));
 
 
@@ -37,17 +36,17 @@ export class ClinicController extends ClinicRepository {
 
     }
 
-    async clinicUpdate(req: Request, res: Response) {
+    async drugUpdate(req: Request, res: Response) {
         try {
 
-            const findClinic = await this.findClinic(req.body.email);
+            const findDrug = await this.findIdDrug(Number(req.params.id));
 
-            if (!findClinic) {
+            if (!findDrug) {
                 return res.status(STATUS404).json(new HttpResponse(STATUS404, true, UPDATE_NOT_FOUND404, []));
             }
-            console.log(typeof findClinic)
+            // console.log(typeof findDrug)
 
-            await this.updateClinic(Number(req.params.id), req.body);
+            await this.updateDrug(Number(req.params.id), req.body);
             res.status(STATUS200).json(new HttpResponse(STATUS200, false, UPDATE_SUCCESS200, []));
 
         } catch (error) {
@@ -56,15 +55,15 @@ export class ClinicController extends ClinicRepository {
 
     }
 
-    async clinicDelete(req: Request, res: Response) {
+    async drugDelete(req: Request, res: Response) {
         try {
 
-            const findClinic = await this.findIdClinic(Number(req.params.id));
-            if (!findClinic) {
+            const findDrug = await this.findIdDrug(Number(req.params.id));
+            if (!findDrug) {
                 return res.status(STATUS404).json(new HttpResponse(STATUS404, true, DELETE_NOT_FOUND404, []));
             }
 
-            await this.deleteClinic(Number(req.params.id));
+            await this.deleteDrug(Number(req.params.id));
             res.status(STATUS200).json(new HttpResponse(STATUS200, false, DELETE_SUCCESS200, []));
 
         } catch (error) {

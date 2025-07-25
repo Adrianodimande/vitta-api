@@ -14,7 +14,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
+model User {
   id         Int       @id @default(autoincrement())
   name       String
   email      String    @unique
@@ -23,6 +23,7 @@ model user {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
+  drug Drug[]
 }
 
 enum role {
@@ -32,7 +33,7 @@ enum role {
   Patient
 }
 
-model clinic {
+model Clinic {
   id         Int      @id @default(autoincrement())
   name       String
   address    String
@@ -40,5 +41,35 @@ model clinic {
   email      String   @unique
   created_at DateTime @default(now())
 }
+model Drug{
+id Int @id @default(autoincrement())
+user User @relation(fields: [user_id],references: [id])
+user_id Int 
+name String @unique
+date_start DateTime @default(now())
+date_end DateTime
+observation String
+time_Drug Time_Drug[]
+dose Dose[]
+}
 
+model Time_Drug{
+  id Int @id @default(autoincrement())
+  drug Drug @relation(fields: [drug_id],references: [id])
+  drug_id Int
+  time DateTime @db.Time()
+}
 
+model Dose{
+  id Int @id @default(autoincrement())
+  drog Drug @relation(fields: [drug_id],references: [id])
+  drug_id Int
+  data DateTime @db.Date
+  time DateTime @db.Time()
+  status Status_Dose @default(Pending)
+}
+enum Status_Dose {
+Take
+Pending
+Forgotten
+}

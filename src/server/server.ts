@@ -4,12 +4,14 @@ import { HttpResponse } from './httpResponse';
 import { STATUS500 } from '../settings/constants/constStatusCode';
 import { SERVER_ERROR500 } from '../settings/constants/constCrud';
 import routerClinic from '../routes/clinic';
+import routerDrug from '../routes/drug';
 
 const app = express();
 const port = 3000;
 app.use(express.json());
 app.use('/auth', routerSignInAndSignUp);
 app.use('/clinic', routerClinic);
+app.use('/drug', routerDrug);
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
     // console.log("Erro capturado ", error);
     if (error instanceof HttpResponse) {
