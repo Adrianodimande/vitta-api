@@ -55,7 +55,7 @@ CREATE TABLE "Time_Drug" (
 CREATE TABLE "Dose" (
     "id" SERIAL NOT NULL,
     "drug_id" INTEGER NOT NULL,
-    "data" DATE NOT NULL,
+    "date" DATE NOT NULL,
     "time" TIME NOT NULL,
     "status" "Status_Dose" NOT NULL DEFAULT 'Pending',
 
@@ -75,7 +75,7 @@ CREATE UNIQUE INDEX "Drug_name_key" ON "Drug"("name");
 ALTER TABLE "Drug" ADD CONSTRAINT "Drug_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Time_Drug" ADD CONSTRAINT "Time_Drug_drug_id_fkey" FOREIGN KEY ("drug_id") REFERENCES "Drug"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Time_Drug" ADD CONSTRAINT "Time_Drug_drug_id_fkey" FOREIGN KEY ("drug_id") REFERENCES "Drug"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Dose" ADD CONSTRAINT "Dose_drug_id_fkey" FOREIGN KEY ("drug_id") REFERENCES "Drug"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Dose" ADD CONSTRAINT "Dose_drug_id_fkey" FOREIGN KEY ("drug_id") REFERENCES "Drug"("id") ON DELETE CASCADE ON UPDATE CASCADE;

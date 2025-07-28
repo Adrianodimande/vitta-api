@@ -6,25 +6,25 @@ import { ValidationDrug } from '../services/validations/validationDrug';
 
 const routerDrug = express.Router();
 const drugController = new DrugController();
-routerDrug.get('/', async (req, res) => {
+routerDrug.get('/', async (req, res) => drugController.DrugRead(req, res));
 
-    drugController.DrugRead(req, res);
+routerDrug.get('/user/:id', async (req, res) => drugController.DrugReadByUserId(req, res));
 
-});
 routerDrug.post('/',
-     sanitizeDrug, 
-     ValidationDrug.validationCreateDrug, 
-     async (req, res) => {
-    drugController.drugRegister(req, res)
-
-});
-routerDrug.put('/:id', 
-    // sanitizeDrug, 
-    ValidationDrug.validationCreateDrug, 
+    sanitizeDrug,
+    ValidationDrug.validationDrug,
     async (req, res) => {
-    drugController.drugUpdate(req, res)
+        drugController.drugRegister(req, res)
 
-});
+    });
+routerDrug.put('/:id',
+    sanitizeDrug,
+    ValidationDrug.validationDrug,
+    async (req, res) => {
+
+        drugController.drugUpdate(req, res)
+
+    });
 routerDrug.delete('/:id', async (req, res) => {
     drugController.drugDelete(req, res)
 

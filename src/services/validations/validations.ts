@@ -117,6 +117,8 @@ export class Validations {
     }
   }
 
+ 
+
   static multiValidations(validations: (() => void)[]) {
     for (const validate of validations) {
       validate();

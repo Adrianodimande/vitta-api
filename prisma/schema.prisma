@@ -55,16 +55,16 @@ dose Dose[]
 
 model Time_Drug{
   id Int @id @default(autoincrement())
-  drug Drug @relation(fields: [drug_id],references: [id])
+  drug Drug @relation(fields: [drug_id],references: [id], onDelete: Cascade)
   drug_id Int
   time DateTime @db.Time()
 }
 
 model Dose{
   id Int @id @default(autoincrement())
-  drog Drug @relation(fields: [drug_id],references: [id])
+  drog Drug @relation(fields: [drug_id],references: [id],onDelete: Cascade)
   drug_id Int
-  data DateTime @db.Date
+  date DateTime @db.Date
   time DateTime @db.Time()
   status Status_Dose @default(Pending)
 }

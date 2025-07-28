@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import { INVALIDCREDENTIALS401 } from "../settings/constants/constSignInAndSignUp";
 import { Auth } from "../middleware/auth";
 import { Request, Response } from "express";
+import { role } from "../generated/prisma";
 export class AuthController extends RepositorySignInAndSignUp {
 
 
@@ -40,16 +41,29 @@ export class AuthController extends RepositorySignInAndSignUp {
         const { email, password } = req.body;
         try {
             const findUser = await this.findUser(email);
+            if (findUser !== null) {
 
-            if (findUser) {
                 const validation = await bcrypt.compare(password, findUser.password);
                 if (!validation) {
                     return res.status(STATUS401).json(new HttpResponse(STATUS401, false, INVALIDCREDENTIALS401, []));
                 }
+            } else {
+                return res.status(STATUS401).json(new HttpResponse(STATUS401, false, INVALIDCREDENTIALS401, []));
             }
             const token = await Auth.generateToken(req.body);
 
-            res.status(STATUS200).json(new HttpResponse(STATUS200, false, READ_SUCCESS200, token));
+            const userDetail = {
+                id: findUser?.id,
+                name: findUser?.name,
+                email: findUser?.email,
+                role: findUser?.role
+
+            }
+
+            res.status(STATUS200).json(new HttpResponse(STATUS200, false, READ_SUCCESS200, {
+                user: userDetail,
+                token: token
+            }));
         } catch (error) {
             console.log('error');
             res.status(STATUS500).json(new HttpResponse(STATUS500, true, SERVER_ERROR500, []));

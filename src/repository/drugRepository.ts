@@ -13,6 +13,18 @@ export class DrugRepository {
         const drugData = await this.prisma.drug.findMany();
         return drugData
     }
+
+    protected async readDrugByUserId(id: number) {
+        const drugData = await this.prisma.drug.findMany({
+            where: {
+                user_id: id
+            }
+        });
+        return drugData
+    }
+
+
+
     protected async findDrug(name: string) {
         const drugData = await this.prisma.drug.findFirst({
             where: {
@@ -30,7 +42,6 @@ export class DrugRepository {
         return drugData
     }
     protected async createDrug(drugData: Drug) {
-        console.log(drugData);
 
         await this.prisma.drug.create({
             data: {
@@ -49,13 +60,11 @@ export class DrugRepository {
             where: {
                 id: id
             },
-            // ta dar erro na atualizacao  data
             data: {
                 user_id: drugData.user_id,
                 name: drugData.name,
-                // date_start: drugData.date_start ? new Date(drugData.date_start) : undefined,
-                // date_end: drugData.date_end ? new Date(drugData.date_end) : undefined,
-
+                date_start: drugData.date_start ? new Date(drugData.date_start) : undefined,
+                date_end: drugData.date_end ? new Date(drugData.date_end) : undefined,
                 observation: drugData.observation
 
             }

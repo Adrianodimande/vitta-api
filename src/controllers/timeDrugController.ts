@@ -2,14 +2,14 @@ import { STATUS200, STATUS201, STATUS400, STATUS401, STATUS404, STATUS409, STATU
 import { CREATE_CONFLICT409, CREATE_SUCCESS201, DELETE_NOT_FOUND404, DELETE_SUCCESS200, READ_SUCCESS200, SERVER_ERROR500, UPDATE_NOT_FOUND404, UPDATE_SUCCESS200 } from "../settings/constants/constCrud";
 import { HttpResponse } from "../server/httpResponse";
 import { Request, Response } from "express";
-import { DrugRepository } from "../repository/drugRepository";
-export class DrugController extends DrugRepository {
+import { TimeDrugRepository } from "../repository/timeDrugRepository";
+export class TimeDrugController extends TimeDrugRepository {
 
-    async DrugRead(req: Request, res: Response) {
+    async timeDrugRead(req: Request, res: Response) {
         try {
 
 
-            const data = await this.readDrug();
+            const data = await this.readTimeDrug();
             res.status(STATUS200).json(new HttpResponse(STATUS200, false, READ_SUCCESS200, data));
 
 
@@ -18,30 +18,10 @@ export class DrugController extends DrugRepository {
         }
 
     }
-
-
-    async DrugReadByUserId(req: Request, res: Response) {
+    async timeDrugRegister(req: Request, res: Response) {
         try {
-
-
-            const data = await this.readDrugByUserId(Number(req.params.id));
-            res.status(STATUS200).json(new HttpResponse(STATUS200, false, READ_SUCCESS200, data));
-
-
-        } catch (error) {
-            res.status(STATUS500).json(new HttpResponse(STATUS500, true, SERVER_ERROR500, []));
-        }
-
-    }
-
-    async drugRegister(req: Request, res: Response) {
-        try {
-            const findDrug = await this.findDrug(req.body.name);
-
-            if (findDrug) {
-                return res.status(STATUS409).json(new HttpResponse(STATUS409, true, CREATE_CONFLICT409, []));
-            }
-            await this.createDrug(req.body);
+          
+            await this.createTimeDrug(req.body);
             res.status(STATUS201).json(new HttpResponse(STATUS201, false, CREATE_SUCCESS201, []));
 
 
@@ -51,17 +31,17 @@ export class DrugController extends DrugRepository {
 
     }
 
-    async drugUpdate(req: Request, res: Response) {
+    async timeDrugUpdate(req: Request, res: Response) {
         try {
 
-            const findDrug = await this.findIdDrug(Number(req.params.id));
+            const findTimeDrug = await this.findIdTimeDrug(Number(req.params.id));
 
-            if (!findDrug) {
+            if (!findTimeDrug) {
                 return res.status(STATUS404).json(new HttpResponse(STATUS404, true, UPDATE_NOT_FOUND404, []));
             }
-            // console.log(typeof findDrug)
+            // console.log(typeof findTimeDrug)
 
-            await this.updateDrug(Number(req.params.id), req.body);
+            await this.updateTimeDrug(Number(req.params.id), req.body);
             res.status(STATUS200).json(new HttpResponse(STATUS200, false, UPDATE_SUCCESS200, []));
 
         } catch (error) {
@@ -70,15 +50,15 @@ export class DrugController extends DrugRepository {
 
     }
 
-    async drugDelete(req: Request, res: Response) {
+    async timeDrugDelete(req: Request, res: Response) {
         try {
 
-            const findDrug = await this.findIdDrug(Number(req.params.id));
-            if (!findDrug) {
+            const findTimeDrug = await this.findIdTimeDrug(Number(req.params.id));
+            if (!findTimeDrug) {
                 return res.status(STATUS404).json(new HttpResponse(STATUS404, true, DELETE_NOT_FOUND404, []));
             }
 
-            await this.deleteDrug(Number(req.params.id));
+            await this.deleteTimeDrug(Number(req.params.id));
             res.status(STATUS200).json(new HttpResponse(STATUS200, false, DELETE_SUCCESS200, []));
 
         } catch (error) {
