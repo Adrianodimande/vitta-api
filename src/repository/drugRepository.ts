@@ -18,6 +18,10 @@ export class DrugRepository {
         const drugData = await this.prisma.drug.findMany({
             where: {
                 user_id: id
+            },
+            include:{
+                dose:true,
+                time_Drug:true
             }
         });
         return drugData
