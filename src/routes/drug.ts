@@ -2,10 +2,17 @@ import express, { response } from 'express';
 import { DrugController } from '../controllers/drugController';
 import sanitizeDrug from '../services/sanitize/sanitizeDrug';
 import { ValidationDrug } from '../services/validations/validationDrug';
+import { DrugRepository } from '../repository/drugRepository';
+import { AgentController } from '../controllers/agent/agentController';
+import { AgentIa } from '../services/agent/agentIa';
 
 
 const routerDrug = express.Router();
-const drugController = new DrugController();
+const agentIa = new AgentIa();
+const agentController = new AgentController(agentIa);
+const drugRepository = new DrugRepository();
+
+const drugController = new DrugController(drugRepository, agentController);
 routerDrug.get('/', async (req, res) => drugController.DrugRead(req, res));
 
 routerDrug.get('/user/:id', async (req, res) => drugController.DrugReadByUserId(req, res));

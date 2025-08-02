@@ -1,6 +1,7 @@
 import { Drug, PrismaClient } from "../generated/prisma";
+import { IDrugRepository } from "./interfaces/iDrugRepository";
 
-export class DrugRepository {
+export class DrugRepository implements IDrugRepository {
     protected prisma: PrismaClient;
     constructor() {
         this.prisma = new PrismaClient({
@@ -9,12 +10,12 @@ export class DrugRepository {
             ;
     }
 
-    protected async readDrug() {
+    public async readDrug() {
         const drugData = await this.prisma.drug.findMany();
         return drugData
     }
 
-    protected async readDrugByUserId(id: number) {
+    public async readDrugByUserId(id: number) {
         const drugData = await this.prisma.drug.findMany({
             where: {
                 user_id: id
@@ -29,7 +30,7 @@ export class DrugRepository {
 
 
 
-    protected async findDrug(name: string) {
+    public async findDrug(name: string) {
         const drugData = await this.prisma.drug.findFirst({
             where: {
                 name: name
@@ -37,7 +38,7 @@ export class DrugRepository {
         });
         return drugData
     }
-    protected async findIdDrug(id: number) {
+    public async findIdDrug(id: number) {
         const drugData = await this.prisma.drug.findFirst({
             where: {
                 id: id
@@ -45,7 +46,7 @@ export class DrugRepository {
         });
         return drugData
     }
-    protected async createDrug(drugData: Drug) {
+    public async createDrug(drugData: Drug) {
 
         await this.prisma.drug.create({
             data: {
@@ -59,7 +60,7 @@ export class DrugRepository {
         )
     }
 
-    protected async updateDrug(id: number, drugData: Drug) {
+    public async updateDrug(id: number, drugData: Drug) {
         await this.prisma.drug.update({
             where: {
                 id: id
@@ -77,7 +78,7 @@ export class DrugRepository {
     }
 
 
-    protected async deleteDrug(id: number) {
+    public async deleteDrug(id: number) {
 
         await this.prisma.drug.delete({
             where: {
