@@ -2,8 +2,8 @@
 import { hash } from "bcrypt";
 import { Sanitize } from "./sanitize";
 import { randomInt } from "crypto";
-
-const sanitizeSignInAndSignUp = async (req: any, res: any, next: any) => {
+import { Request, Response, NextFunction } from 'express';
+const sanitizeSignInAndSignUp = async (req: Request, res: Response, next: NextFunction) => {
 
     const body = await req.body;
     const random = randomInt(10, 16);

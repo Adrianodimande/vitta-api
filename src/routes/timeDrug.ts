@@ -23,7 +23,7 @@ routerTimeDrug.post('/',
      ValidationTimeDrug.validationTimeDrug, 
     async (req, res) => {
 
-        timeDrugController.timeDrugRegister(req, res)
+        // timeDrugController.timeDrugRegister(req, res)
 
     });
 routerTimeDrug.put('/:id',

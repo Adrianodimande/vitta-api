@@ -1,20 +1,33 @@
 
 import { Sanitize } from "./sanitize";
-import { randomInt } from "crypto";
+import { Request, Response, NextFunction } from 'express';
 
-const sanitizetimeDrug = async (req: any, res: any, next: any) => {
+const sanitizetimeDrug = async (req: Request, res: Response) => {
 
     const body = await req.body;
 
-    const {  time } = await req.body;
+    const { time } = await req.body;
 
 
     if (body['time'] !== undefined) {
         body['time'] = Sanitize.sanitizeString(time);
     }
 
-
-    next()
 };
+
+// const sanitizetimeDrug = async (req: Request, res: Response, next: NextFunction) => {
+
+//     const body = await req.body;
+
+//     const { time } = await req.body;
+
+
+//     if (body['time'] !== undefined) {
+//         body['time'] = Sanitize.sanitizeString(time);
+//     }
+
+
+//     next()
+// };
 
 export default sanitizetimeDrug;

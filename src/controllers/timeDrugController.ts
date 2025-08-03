@@ -1,9 +1,10 @@
 import { STATUS200, STATUS201, STATUS400, STATUS401, STATUS404, STATUS409, STATUS500 } from "../settings/constants/constStatusCode";
 import { CREATE_CONFLICT409, CREATE_SUCCESS201, DELETE_NOT_FOUND404, DELETE_SUCCESS200, READ_SUCCESS200, SERVER_ERROR500, UPDATE_NOT_FOUND404, UPDATE_SUCCESS200 } from "../settings/constants/constCrud";
 import { HttpResponse } from "../server/httpResponse";
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { TimeDrugRepository } from "../repository/timeDrugRepository";
 import { ITimeDrugRepository } from "../repository/interfaces/iTimeDrugRepository";
+import sanitizetimeDrug from "../services/sanitize/sanitizeTimeDrug";
 export class TimeDrugController {
 
     constructor(private readonly timeDrugController: ITimeDrugRepository) { }
@@ -20,11 +21,12 @@ export class TimeDrugController {
         }
 
     }
-    async timeDrugRegister(req: Request, res: Response) {
+    async timeDrugRegister(req: Request, res: Response, id: number) {
         try {
+            // sanitizetimeDrug(req, res),
+                // ValidationDrug.validationDrug,
+                await this.timeDrugController.createTimeDrug(req.body.drug, id);
 
-           await this.timeDrugController.createTimeDrug(req.body);
-            res.status(STATUS201).json(new HttpResponse(STATUS201, false, CREATE_SUCCESS201,[]));
 
 
         } catch (error) {

@@ -1,8 +1,8 @@
 
 import { Sanitize } from "./sanitize";
 import { randomInt } from "crypto";
-
-const sanitizeDrug = async (req: any, res: any, next: any) => {
+import { Request, Response, NextFunction } from 'express';
+const sanitizeDrug = async (req: Request, res: Response, next: NextFunction) => {
 
     const body = await req.body;
     const { user_id, name, date_start, date_end, observation } = await req.body;

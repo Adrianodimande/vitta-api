@@ -23,11 +23,15 @@ export class TimeDrugRepository implements ITimeDrugRepository {
         });
         return timeDrugData
     }
-    public async createTimeDrug(timeDrugData: Array<Time_Drug>) {
+    public async createTimeDrug(timeDrugData: Array<Time_Drug>, id: number) {
+        //  timeDrugData.map((element) => {
+        //     element.drug_id = id;
+        // });
         console.log(timeDrugData);
         await this.prisma.time_Drug.createMany({
             data: timeDrugData
-        }
+        },
+
         );
 
     }
