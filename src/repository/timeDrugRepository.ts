@@ -1,27 +1,21 @@
 import { Dose, PrismaClient, Time_Drug } from "../generated/prisma";
+import { ITimeDrugRepository } from "./interfaces/iTimeDrugRepository";
 
-export class TimeDrugRepository {
+export class TimeDrugRepository implements ITimeDrugRepository {
     protected prisma: PrismaClient;
     constructor() {
         this.prisma = new PrismaClient({
-            log: ["query", "info", "warn", "error"],
+            // log: ["query", "info", "warn", "error"],
         })
             ;
     }
 
-    protected async readTimeDrug() {
+    public async readTimeDrug() {
         const timeDrugData = await this.prisma.time_Drug.findMany();
         return timeDrugData
     }
-    // protected async findTimeDrug(name: string) {
-    //     const timeDrugData = await this.prisma.time_Drug.findFirst({
-    //         where: {
-    //             name: name
-    //         }
-    //     });
-    //     return timeDrugData
-    // }
-    protected async findIdTimeDrug(id: number) {
+
+    public async findIdTimeDrug(id: number) {
         const timeDrugData = await this.prisma.time_Drug.findFirst({
             where: {
                 id: id
@@ -29,18 +23,16 @@ export class TimeDrugRepository {
         });
         return timeDrugData
     }
-    protected async createTimeDrug(timeDrugData: Time_Drug) {
-        await this.prisma.time_Drug.create({
-            data: {
-                drug_id: timeDrugData.drug_id,
-                time: new Date(timeDrugData.time),
-
-            }
+    public async createTimeDrug(timeDrugData: Array<Time_Drug>) {
+        console.log(timeDrugData);
+        await this.prisma.time_Drug.createMany({
+            data: timeDrugData
         }
-        )
+        );
+
     }
 
-    protected async updateTimeDrug(id: number, timeDrugData: Time_Drug) {
+    public async updateTimeDrug(id: number, timeDrugData: Time_Drug) {
         await this.prisma.time_Drug.update({
             where: {
                 id: id
@@ -56,7 +48,7 @@ export class TimeDrugRepository {
     }
 
 
-    protected async deleteTimeDrug(id: number) {
+    public async deleteTimeDrug(id: number) {
 
         await this.prisma.time_Drug.delete({
             where: {

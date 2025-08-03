@@ -4,7 +4,7 @@ export class DoseRepository {
     protected prisma: PrismaClient;
     constructor() {
         this.prisma = new PrismaClient({
-            log: ["query", "info", "warn", "error"],
+            // log: ["query", "info", "warn", "error"],
         })
             ;
     }

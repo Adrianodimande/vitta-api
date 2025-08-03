@@ -3,13 +3,15 @@ import { CREATE_CONFLICT409, CREATE_SUCCESS201, DELETE_NOT_FOUND404, DELETE_SUCC
 import { HttpResponse } from "../server/httpResponse";
 import { Request, Response } from "express";
 import { TimeDrugRepository } from "../repository/timeDrugRepository";
-export class TimeDrugController extends TimeDrugRepository {
+import { ITimeDrugRepository } from "../repository/interfaces/iTimeDrugRepository";
+export class TimeDrugController {
 
+    constructor(private readonly timeDrugController: ITimeDrugRepository) { }
     async timeDrugRead(req: Request, res: Response) {
         try {
 
 
-            const data = await this.readTimeDrug();
+            const data = await this.timeDrugController.readTimeDrug();
             res.status(STATUS200).json(new HttpResponse(STATUS200, false, READ_SUCCESS200, data));
 
 
@@ -20,9 +22,9 @@ export class TimeDrugController extends TimeDrugRepository {
     }
     async timeDrugRegister(req: Request, res: Response) {
         try {
-          
-            await this.createTimeDrug(req.body);
-            res.status(STATUS201).json(new HttpResponse(STATUS201, false, CREATE_SUCCESS201, []));
+
+           await this.timeDrugController.createTimeDrug(req.body);
+            res.status(STATUS201).json(new HttpResponse(STATUS201, false, CREATE_SUCCESS201,[]));
 
 
         } catch (error) {
@@ -34,14 +36,14 @@ export class TimeDrugController extends TimeDrugRepository {
     async timeDrugUpdate(req: Request, res: Response) {
         try {
 
-            const findTimeDrug = await this.findIdTimeDrug(Number(req.params.id));
+            const findTimeDrug = await this.timeDrugController.findIdTimeDrug(Number(req.params.id));
 
             if (!findTimeDrug) {
                 return res.status(STATUS404).json(new HttpResponse(STATUS404, true, UPDATE_NOT_FOUND404, []));
             }
             // console.log(typeof findTimeDrug)
 
-            await this.updateTimeDrug(Number(req.params.id), req.body);
+            await this.timeDrugController.updateTimeDrug(Number(req.params.id), req.body);
             res.status(STATUS200).json(new HttpResponse(STATUS200, false, UPDATE_SUCCESS200, []));
 
         } catch (error) {
@@ -53,12 +55,12 @@ export class TimeDrugController extends TimeDrugRepository {
     async timeDrugDelete(req: Request, res: Response) {
         try {
 
-            const findTimeDrug = await this.findIdTimeDrug(Number(req.params.id));
+            const findTimeDrug = await this.timeDrugController.findIdTimeDrug(Number(req.params.id));
             if (!findTimeDrug) {
                 return res.status(STATUS404).json(new HttpResponse(STATUS404, true, DELETE_NOT_FOUND404, []));
             }
 
-            await this.deleteTimeDrug(Number(req.params.id));
+            await this.timeDrugController.deleteTimeDrug(Number(req.params.id));
             res.status(STATUS200).json(new HttpResponse(STATUS200, false, DELETE_SUCCESS200, []));
 
         } catch (error) {

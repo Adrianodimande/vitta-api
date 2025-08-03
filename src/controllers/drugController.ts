@@ -6,6 +6,7 @@ import { DrugRepository } from "../repository/drugRepository";
 import { AgentIa } from "../services/agent/agentIa";
 import { AgentController } from "./agent/agentController";
 import { IDrugRepository } from "../repository/interfaces/iDrugRepository";
+import { register } from "module";
 export class DrugController {
 
 
@@ -48,14 +49,11 @@ export class DrugController {
             if (findDrug) {
                 return res.status(STATUS409).json(new HttpResponse(STATUS409, true, CREATE_CONFLICT409, []));
             }
-            await this.drugRepository.createDrug(req.body);
+            var data = await this.drugRepository.createDrug(req.body);
             await this.agentController.register(res, 'Medicamento');
             const message = await this.agentController.register(res, 'Medicamento');
 
-            res.status(STATUS201).json(new HttpResponse(STATUS201, false, message!, []));
-
-
-
+            res.status(STATUS201).json(new HttpResponse(STATUS201, false, message!, data));
 
         } catch (error) {
             res.status(STATUS500).json(new HttpResponse(STATUS500, true, SERVER_ERROR500, []));

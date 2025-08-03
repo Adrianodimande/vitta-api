@@ -20,9 +20,9 @@ export class DrugRepository implements IDrugRepository {
             where: {
                 user_id: id
             },
-            include:{
-                dose:true,
-                time_Drug:true
+            include: {
+                dose: true,
+                time_Drug: true
             }
         });
         return drugData
@@ -48,16 +48,21 @@ export class DrugRepository implements IDrugRepository {
     }
     public async createDrug(drugData: Drug) {
 
-        await this.prisma.drug.create({
+        var data = await this.prisma.drug.create({
             data: {
                 user_id: drugData.user_id,
                 name: drugData.name,
                 date_start: new Date(drugData.date_start),
                 date_end: new Date(drugData.date_end),
                 observation: drugData.observation
+            },
+            select:{
+                id:true
             }
         }
         )
+
+        return data;
     }
 
     public async updateDrug(id: number, drugData: Drug) {
