@@ -25,6 +25,7 @@ export class TimeDrugController {
         try {
             // sanitizetimeDrug(req, res),
                 // ValidationDrug.validationDrug,
+            
                 await this.timeDrugController.createTimeDrug(req.body.drug, id);
 
 
