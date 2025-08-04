@@ -5,7 +5,7 @@ export class TimeDrugRepository implements ITimeDrugRepository {
     protected prisma: PrismaClient;
     constructor() {
         this.prisma = new PrismaClient({
-            // log: ["query", "info", "warn", "error"],
+            log: ["query", "info", "warn", "error"],
         })
             ;
     }
@@ -24,12 +24,15 @@ export class TimeDrugRepository implements ITimeDrugRepository {
         return timeDrugData
     }
     public async createTimeDrug(timeDrugData: Array<Time_Drug>, id: number) {
-         timeDrugData.map((element) => {
-            element.drug_id = id;
-        });
-        // console.log(`====>${timeDrugData[0].time}`);
+        // atribuindo valores
+
+        const listTimeDrug = timeDrugData.map((element) => ({
+            drug_id: id,
+            time: new Date(element.time)
+        }));
+
         await this.prisma.time_Drug.createMany({
-            data: timeDrugData
+            data: listTimeDrug
         },
 
         );

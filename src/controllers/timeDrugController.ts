@@ -7,12 +7,12 @@ import { ITimeDrugRepository } from "../repository/interfaces/iTimeDrugRepositor
 import sanitizetimeDrug from "../services/sanitize/sanitizeTimeDrug";
 export class TimeDrugController {
 
-    constructor(private readonly timeDrugController: ITimeDrugRepository) { }
+    constructor(private readonly timeDrugRepository: ITimeDrugRepository) { }
     async timeDrugRead(req: Request, res: Response) {
         try {
 
 
-            const data = await this.timeDrugController.readTimeDrug();
+            const data = await this.timeDrugRepository.readTimeDrug();
             res.status(STATUS200).json(new HttpResponse(STATUS200, false, READ_SUCCESS200, data));
 
 
@@ -25,8 +25,8 @@ export class TimeDrugController {
         try {
             // sanitizetimeDrug(req, res),
                 // ValidationDrug.validationDrug,
-            
-                await this.timeDrugController.createTimeDrug(req.body.drug, id);
+
+                await this.timeDrugRepository.createTimeDrug(req.body.time_drug, id);
 
 
 
@@ -39,14 +39,14 @@ export class TimeDrugController {
     async timeDrugUpdate(req: Request, res: Response) {
         try {
 
-            const findTimeDrug = await this.timeDrugController.findIdTimeDrug(Number(req.params.id));
+            const findTimeDrug = await this.timeDrugRepository.findIdTimeDrug(Number(req.params.id));
 
             if (!findTimeDrug) {
                 return res.status(STATUS404).json(new HttpResponse(STATUS404, true, UPDATE_NOT_FOUND404, []));
             }
             // console.log(typeof findTimeDrug)
 
-            await this.timeDrugController.updateTimeDrug(Number(req.params.id), req.body);
+            await this.timeDrugRepository.updateTimeDrug(Number(req.params.id), req.body);
             res.status(STATUS200).json(new HttpResponse(STATUS200, false, UPDATE_SUCCESS200, []));
 
         } catch (error) {
@@ -58,12 +58,12 @@ export class TimeDrugController {
     async timeDrugDelete(req: Request, res: Response) {
         try {
 
-            const findTimeDrug = await this.timeDrugController.findIdTimeDrug(Number(req.params.id));
+            const findTimeDrug = await this.timeDrugRepository.findIdTimeDrug(Number(req.params.id));
             if (!findTimeDrug) {
                 return res.status(STATUS404).json(new HttpResponse(STATUS404, true, DELETE_NOT_FOUND404, []));
             }
 
-            await this.timeDrugController.deleteTimeDrug(Number(req.params.id));
+            await this.timeDrugRepository.deleteTimeDrug(Number(req.params.id));
             res.status(STATUS200).json(new HttpResponse(STATUS200, false, DELETE_SUCCESS200, []));
 
         } catch (error) {

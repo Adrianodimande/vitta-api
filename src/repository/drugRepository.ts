@@ -5,7 +5,7 @@ export class DrugRepository implements IDrugRepository {
     protected prisma: PrismaClient;
     constructor() {
         this.prisma = new PrismaClient({
-            // log: ["query", "info", "warn", "error"],
+            log: ["query", "info", "warn", "error"],
         })
             ;
     }

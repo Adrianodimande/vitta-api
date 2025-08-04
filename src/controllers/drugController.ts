@@ -47,11 +47,14 @@ export class DrugController {
         try {
             const findDrug = await this.drugRepository.findDrug(req.body.name);
 
-            // console.log(req.body.drug);
             if (findDrug) {
                 return res.status(STATUS409).json(new HttpResponse(STATUS409, true, CREATE_CONFLICT409, []));
             }
-             var {id} = await this.drugRepository.createDrug(req.body);
+
+            if (!req.body.time_drug[0]) {
+                return res.status(STATUS404).json(new HttpResponse(STATUS404, true, 'impo', []));
+            }
+            var { id } = await this.drugRepository.createDrug(req.body);
 
 
 
@@ -60,10 +63,10 @@ export class DrugController {
 
 
             // inicio agente 
-            await this.agentController.register(res, 'Medicamento');
-            const message = await this.agentController.register(res, 'Medicamento');
+            // await this.agentController.register(res, 'Medicamento');
+            // const message = await this.agentController.register(res, 'Medicamento');
             // fim agente 
-            res.status(STATUS201).json(new HttpResponse(STATUS201, false, message!, []));
+            res.status(STATUS201).json(new HttpResponse(STATUS201, false, CREATE_SUCCESS201, []));
 
         } catch (error) {
             res.status(STATUS500).json(new HttpResponse(STATUS500, true, SERVER_ERROR500, []));
@@ -79,7 +82,7 @@ export class DrugController {
             if (!findDrug) {
                 return res.status(STATUS404).json(new HttpResponse(STATUS404, true, UPDATE_NOT_FOUND404, []));
             }
-            // console.log(typeof findDrug)
+
 
             await this.drugRepository.updateDrug(Number(req.params.id), req.body);
             res.status(STATUS200).json(new HttpResponse(STATUS200, false, UPDATE_SUCCESS200, []));
