@@ -8,6 +8,9 @@ import { IDrugRepository } from "../repository/interfaces/iDrugRepository";
 import { register } from "module";
 import { ITimeDrugRepository } from "../repository/interfaces/iTimeDrugRepository";
 import { TimeDrugController } from "./timeDrugController";
+
+
+
 export class DrugController {
 
 
@@ -27,21 +30,19 @@ export class DrugController {
     }
 
 
-    async DrugReadByUserId(req: Request, res: Response) {
-        try {
 
+async DrugReadByUserId(req: Request, res: Response) {
+    try {
+        const data = await this.drugRepository.readDrugByUserId(Number(req.params.id));
 
-            const data = await this.drugRepository.readDrugByUserId(Number(req.params.id));
+    
 
-
-            res.status(STATUS200).json(new HttpResponse(STATUS200, false, READ_SUCCESS200, data));
-
-
-        } catch (error) {
-            res.status(STATUS500).json(new HttpResponse(STATUS500, true, SERVER_ERROR500, []));
-        }
-
+        res.status(STATUS200).json(new HttpResponse(STATUS200, false, READ_SUCCESS200, data));
+    } catch (error) {
+        res.status(STATUS500).json(new HttpResponse(STATUS500, true, SERVER_ERROR500, []));
     }
+}
+
 
     async drugRegister(req: Request, res: Response) {
         try {
