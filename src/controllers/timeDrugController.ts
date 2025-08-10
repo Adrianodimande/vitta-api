@@ -8,11 +8,11 @@ import sanitizetimeDrug from "../services/sanitize/sanitizeTimeDrug";
 export class TimeDrugController {
 
     constructor(private readonly timeDrugRepository: ITimeDrugRepository) { }
-    async timeDrugRead(req: Request, res: Response) {
+    async readTimeDrugPutUserId(req: Request, res: Response) {
         try {
 
 
-            const data = await this.timeDrugRepository.readTimeDrug();
+            const data = await this.timeDrugRepository.readTimeDrugPutUserId(Number(req.params.id));
             res.status(STATUS200).json(new HttpResponse(STATUS200, false, READ_SUCCESS200, data));
 
 
@@ -21,14 +21,14 @@ export class TimeDrugController {
         }
 
     }
-    async timeDrugRegister(req: Request, res: Response, id: number) {
+    async timeDrugRegister(req: Request, res: Response) {
         try {
             // sanitizetimeDrug(req, res),
                 // ValidationDrug.validationDrug,
 
-                await this.timeDrugRepository.createTimeDrug(req.body.time_drug, id);
+            var  data=   await this.timeDrugRepository.createTimeDrug(req.body);
 
-
+       res.status(STATUS201).json(new HttpResponse(STATUS201, false, CREATE_SUCCESS201, data));
 
         } catch (error) {
             res.status(STATUS500).json(new HttpResponse(STATUS500, true, SERVER_ERROR500, []));

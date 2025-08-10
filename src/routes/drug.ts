@@ -14,9 +14,9 @@ const agentIa = new AgentIa();
 const agentController = new AgentController(agentIa);
 const drugRepository = new DrugRepository();
 const timeDrugRepository=new TimeDrugRepository();
-const timeDrugController = new TimeDrugController(timeDrugRepository);
 
-const drugController = new DrugController(drugRepository, agentController, timeDrugController);
+
+const drugController = new DrugController(drugRepository, agentController, timeDrugRepository);
 routerDrug.get('/', async (req, res) => drugController.DrugRead(req, res));
 
 routerDrug.get('/user/:id', async (req, res) => drugController.DrugReadByUserId(req, res));

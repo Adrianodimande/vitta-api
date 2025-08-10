@@ -13,17 +13,17 @@ const routerTimeDrug = express.Router();
 
 const timeDrugRepository=new TimeDrugRepository();
 const timeDrugController = new TimeDrugController(timeDrugRepository);
-routerTimeDrug.get('/', async (req, res) => {
+routerTimeDrug.get('/user/:id', async (req, res) => {
 
-    timeDrugController.timeDrugRead(req, res);
+    timeDrugController.readTimeDrugPutUserId(req, res);
 
 });
 routerTimeDrug.post('/',
-     sanitizetimeDrug, 
-     ValidationTimeDrug.validationTimeDrug, 
+    //  sanitizetimeDrug, 
+    //  ValidationTimeDrug.validationTimeDrug, 
     async (req, res) => {
-
-        // timeDrugController.timeDrugRegister(req, res)
+console.log('ta aqui');
+        timeDrugController.timeDrugRegister(req, res)
 
     });
 routerTimeDrug.put('/:id',

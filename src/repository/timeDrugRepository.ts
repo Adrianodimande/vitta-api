@@ -1,3 +1,4 @@
+import { time } from "console";
 import { Dose, PrismaClient, Time_Drug } from "../generated/prisma";
 import { ITimeDrugRepository } from "./interfaces/iTimeDrugRepository";
 
@@ -10,8 +11,23 @@ export class TimeDrugRepository implements ITimeDrugRepository {
             ;
     }
 
-    public async readTimeDrug() {
-        const timeDrugData = await this.prisma.time_Drug.findMany();
+    public async readTimeDrugPutUserId(userId: number) {
+        const timeDrugData = await this.prisma.time_Drug.findMany({
+            where: {
+                drug: {
+                    user_id: userId
+                }
+            }, select: {
+                id: true,
+                time: true,
+                status: true, drug: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                }
+            }
+        });
         return timeDrugData
     }
 
@@ -24,19 +40,19 @@ export class TimeDrugRepository implements ITimeDrugRepository {
         return timeDrugData
     }
     public async createTimeDrug(timeDrugData: Array<Time_Drug>, id: number) {
-        // atribuindo valores
+        const createdRecords = [];
 
-        const listTimeDrug = timeDrugData.map((element) => ({
-            drug_id: id,
-            time: new Date(element.time)
-        }));
+        for (const element of timeDrugData) {
+            const record = await this.prisma.time_Drug.create({
+                data: {
+                    drug_id: id ?? element.drug_id,
+                    time: new Date(element.time),
+                }
+            });
+            createdRecords.push({ id: record.id,time:record.time });
+        }
 
-        await this.prisma.time_Drug.createMany({
-            data: listTimeDrug
-        },
-
-        );
-
+        return createdRecords;
     }
 
     public async updateTimeDrug(id: number, timeDrugData: Time_Drug) {
